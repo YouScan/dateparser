@@ -156,6 +156,10 @@ def parse_with_formats(date_string, date_formats, settings):
 
             date_obj = apply_timezone_from_settings(date_obj, settings)
 
+            if '%H' in date_format or '%I' in date_format \
+                or '%M' in date_format or '%S' in date_format \
+                or '%X' in date_format:
+                period = 'time'
             return {'date_obj': date_obj, 'period': period}
     else:
         return {'date_obj': None, 'period': period}
@@ -200,7 +204,7 @@ class _DateLocaleParser(object):
     def _try_timestamp(self):
         return {
             'date_obj': get_date_from_timestamp(self.date_string, self._settings),
-            'period': 'day',
+            'period': 'time',
         }
 
     def _try_freshness_parser(self):
@@ -270,7 +274,7 @@ class _DateLocaleParser(object):
             return False
         if not date_obj['date_obj']:
             return False
-        if date_obj['period'] not in ('day', 'week', 'month', 'year'):
+        if date_obj['period'] not in ('time', 'day', 'week', 'month', 'year'):
             return False
 
         return True

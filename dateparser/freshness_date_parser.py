@@ -54,14 +54,14 @@ class FreshnessDateDataParser(object):
 
         _settings_tz = settings.TIMEZONE.lower()
 
-        def apply_time(dateobj, timeobj):
+        def apply_time(dateobj, timeobj, period):
             if not isinstance(_time, time):
-                return dateobj
+                return dateobj, period
 
             return dateobj.replace(
                 hour=timeobj.hour, minute=timeobj.minute,
                 second=timeobj.second, microsecond=timeobj.microsecond
-            )
+            ), 'time'
 
         if settings.RELATIVE_BASE:
             self.now = settings.RELATIVE_BASE
@@ -96,7 +96,8 @@ class FreshnessDateDataParser(object):
         date, period = self._parse_date(date_string)
 
         if date:
-            date = apply_time(date, _time)
+            date, period = apply_time(date, _time, period)
+
             if settings.TO_TIMEZONE:
                 date = apply_timezone(date, settings.TO_TIMEZONE)
 
@@ -118,9 +119,9 @@ class FreshnessDateDataParser(object):
         if not kwargs:
             return None, None
 
-        period = 'day'
-        if 'days' not in kwargs:
-            for k in ['weeks', 'months', 'years']:
+        period = 'time'
+        if 'time' not in kwargs:
+            for k in ['days', 'weeks', 'months', 'years']:
                 if k in kwargs:
                     period = k[:-1]
                     break

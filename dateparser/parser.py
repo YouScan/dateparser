@@ -107,7 +107,8 @@ class _no_spaces_parser(object):
     _timeformats = ['%H%M%S.%f', '%H%M%S', '%H%M', '%H']
 
     period = {
-        'day': ['%d', '%H', '%M', '%S'],
+        'time': ['%H', '%M', '%S'],
+        'day': ['%d'],
         'month': ['%m']
     }
 
@@ -278,7 +279,7 @@ class _parser(object):
     def _get_period(self):
         for period in ['time', 'day']:
             if getattr(self, period, None):
-                return 'day'
+                return period
 
         for period in ['month', 'year']:
             if getattr(self, period, None):
