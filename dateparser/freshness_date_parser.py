@@ -54,9 +54,9 @@ class FreshnessDateDataParser(object):
 
         _settings_tz = settings.TIMEZONE.lower()
 
-        def apply_time(dateobj, timeobj, period):
+        def apply_time(dateobj, timeobj, period_):
             if not isinstance(_time, time):
-                return dateobj, period
+                return dateobj, period_
 
             return dateobj.replace(
                 hour=timeobj.hour, minute=timeobj.minute,
@@ -93,7 +93,8 @@ class FreshnessDateDataParser(object):
             else:
                 self.now = datetime.now(self.get_local_tz())
 
-        date, period = self._parse_date(date_string)
+        date, relative_period = self._parse_date(date_string)
+        period = str(relative_period)
 
         if date:
             date, period = apply_time(date, _time, period)
@@ -109,7 +110,7 @@ class FreshnessDateDataParser(object):
                 date = date.replace(tzinfo=None)
 
         self.now = None
-        return date, period
+        return date, period, relative_period
 
     def _parse_date(self, date_string):
         if not self._are_all_words_units(date_string):
@@ -145,8 +146,8 @@ class FreshnessDateDataParser(object):
         return kwargs
 
     def get_date_data(self, date_string, settings=None):
-        date, period = self.parse(date_string, settings)
-        return dict(date_obj=date, period=period)
+        date, period, relative_period = self.parse(date_string, settings)
+        return dict(date_obj=date, period=period, relative_period=relative_period)
 
 
 freshness_date_parser = FreshnessDateDataParser()
