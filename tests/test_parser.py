@@ -132,7 +132,7 @@ class TestNoSpaceParser(BaseTestCase):
             date_string=u"912958:15:10",
             expected_date=datetime(9581, 12, 9, 5, 1),
             date_order='DMY',
-            expected_period='day',
+            expected_period='time',
         ),
         param(
             date_string=u"20201511",
@@ -150,7 +150,7 @@ class TestNoSpaceParser(BaseTestCase):
             date_string=u"71995121046",
             expected_date=datetime(1995, 12, 7, 10, 4, 6),
             date_order='DYM',
-            expected_period='day',
+            expected_period='time',
         ),
         param(
             date_string=u"112015",
@@ -168,7 +168,7 @@ class TestNoSpaceParser(BaseTestCase):
             date_string=u"459712:15:07.54",
             expected_date=datetime(4597, 12, 15, 0, 7),
             date_order='MDY',
-            expected_period='day',
+            expected_period='time',
         ),
         param(
             date_string=u"11012015",
@@ -192,7 +192,7 @@ class TestNoSpaceParser(BaseTestCase):
             date_string=u"12937886",
             expected_date=datetime(2937, 1, 8, 8, 6),
             date_order='MYD',
-            expected_period='day',
+            expected_period='time',
         ),
         param(
             date_string=u"20151211",
@@ -210,7 +210,7 @@ class TestNoSpaceParser(BaseTestCase):
             date_string=u"1986411:5",
             expected_date=datetime(1986, 4, 1, 1, 5),
             date_order='YMD',
-            expected_period='day',
+            expected_period='time',
         ),
         param(
             date_string=u"20153011",
@@ -228,7 +228,7 @@ class TestNoSpaceParser(BaseTestCase):
             date_string=u"2010111110:11",
             expected_date=datetime(2010, 11, 11, 10, 1, 1),
             date_order='YDM',
-            expected_period='day',
+            expected_period='time',
         ),
         param(
             date_string=u"10:11:2",
@@ -253,7 +253,7 @@ class TestNoSpaceParser(BaseTestCase):
         param(
             date_string=u"19991215:07:08:04.54",
             expected_date=datetime(1999, 12, 15, 7, 8, 4),
-            expected_period='day',
+            expected_period='time',
         ),
     ])
     def test_default_order_used_if_date_order_not_supplied(self, date_string, expected_date, expected_period):
@@ -275,19 +275,19 @@ class TestNoSpaceParser(BaseTestCase):
 
     @parameterized.expand([
         param(format_string="%d", expected_period="day"),
-        param(format_string="%H", expected_period="day"),
-        param(format_string="%M", expected_period="day"),
-        param(format_string="%S", expected_period="day"),
+        param(format_string="%H", expected_period="time"),
+        param(format_string="%M", expected_period="time"),
+        param(format_string="%S", expected_period="time"),
         param(format_string="%m", expected_period="month"),
         param(format_string="%y", expected_period="year"),
         param(format_string="", expected_period="year"),
         param(format_string="%m%d", expected_period="day"),
         param(format_string="%Y%m", expected_period="month"),
         param(format_string="%d%m%y", expected_period="day"),
-        param(format_string="%Y%m%d%H%M", expected_period="day"),
-        param(format_string='%Y%m%d%H%M%S.%f', expected_period="day"),
-        param(format_string='%H%M', expected_period="day"),
-        param(format_string='%M%S.%f', expected_period="day"),
+        param(format_string="%Y%m%d%H%M", expected_period="time"),
+        param(format_string='%Y%m%d%H%M%S.%f', expected_period="time"),
+        param(format_string='%H%M', expected_period="time"),
+        param(format_string='%M%S.%f', expected_period="time"),
     ])
     def test_get_period_function(self, format_string, expected_period):
         self.given_parser()

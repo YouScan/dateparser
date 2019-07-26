@@ -59,7 +59,7 @@ def resolve_date_order(order, lst=None):
 
 def parse(datestring, settings):
     exceptions = []
-    for parser in [_parser.parse, _no_spaces_parser.parse]:
+    for parser in [_parser.parse,_no_spaces_parser.parse]:
         try:
             res = parser(datestring, settings)
             if res:
@@ -106,6 +106,7 @@ class _no_spaces_parser(object):
 
     _timeformats = ['%H%M%S.%f', '%H%M%S', '%H%M', '%H']
 
+    period_order = ['time', 'day', 'month']
     period = {
         'time': ['%H', '%M', '%S'],
         'day': ['%d'],
@@ -113,6 +114,7 @@ class _no_spaces_parser(object):
     }
 
     _default_order = resolve_date_order('MDY')
+    _default_list_order = resolve_date_order('MDY', lst=True)
 
     def __init__(self, *args, **kwargs):
 
@@ -134,7 +136,8 @@ class _no_spaces_parser(object):
 
     @classmethod
     def _get_period(cls, format_string):
-        for pname, pdrv in sorted(cls.period.items(), key=lambda x: x[0]):
+        for pname in cls.period_order:
+            pdrv = cls.period[pname]
             for drv in pdrv:
                 if drv in format_string:
                     return pname
@@ -152,14 +155,16 @@ class _no_spaces_parser(object):
         tokens = tokenizer(datestring)
         if settings.DATE_ORDER:
             order = resolve_date_order(settings.DATE_ORDER)
+            list_order = resolve_date_order(settings.DATE_ORDER, lst=True)
         else:
             order = cls._default_order
+            list_order = cls._default_list_order
         nsp = cls()
         ambiguous_date = None
         for token, _ in tokens.tokenize():
             for fmt in nsp.date_formats[order]:
                 try:
-                    dt = strptime(token, fmt), cls._get_period(fmt)
+                    dt = strptime(token, fmt), cls._get_period(fmt), list_order
                     if len(str(dt[0].year)) < 4:
                         ambiguous_date = dt
                         continue
@@ -200,6 +205,7 @@ class _parser(object):
         self.time = None
 
         self.auto_order = []
+        self.inferred_order = []
 
         self._token_day = None
         self._token_month = None
@@ -447,13 +453,18 @@ class _parser(object):
         # correction for preference of day: beginning, current, end
         dateobj = po._correct_for_day(dateobj)
 
-        return dateobj, po._get_period()
+        return dateobj, po._get_period(), po._get_inferred_order()
+
+    def _get_inferred_order(self):
+        return self.inferred_order
+
 
     def _parse(self, type, token, fuzzy, skip_component=None):
 
         def set_and_return(token, type, component, dateobj, skip_date_order=False):
             if not skip_date_order:
                 self.auto_order.append(component)
+            self.inferred_order.append(component)
             setattr(self, '_token_%s' % component, (token, type))
             return [(component, getattr(dateobj, component))]
 
@@ -500,6 +511,10 @@ class _parser(object):
                         elif component == 'month':
                             index = self.auto_order.index('month')
                             self.auto_order[index] = 'day'
+
+                            index2 = self.inferred_order.index('month')
+                            self.inferred_order.insert(index2, 'day')
+
                             setattr(self, '_token_day', self._token_month)
                             setattr(self, '_token_month', (token, type))
                             return [(component, getattr(do, component)), ('day', prev_value)]

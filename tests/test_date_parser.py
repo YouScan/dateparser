@@ -30,33 +30,33 @@ class TestDateParser(BaseTestCase):
         param('[Sept] 04, 2014.', datetime(2014, 9, 4)),
         param('Tuesday Jul 22, 2014', datetime(2014, 7, 22)),
         param('Tues 9th Aug, 2015', datetime(2015, 8, 9)),
-        param('10:04am', datetime(2012, 11, 13, 10, 4)),
+        param('10:04am', datetime(2012, 11, 13, 10, 4), expected_period='time'),
         param('Friday', datetime(2012, 11, 9)),
-        param('November 19, 2014 at noon', datetime(2014, 11, 19, 12, 0)),
-        param('December 13, 2014 at midnight', datetime(2014, 12, 13, 0, 0)),
-        param('Nov 25 2014 10:17 pm', datetime(2014, 11, 25, 22, 17)),
-        param('Wed Aug 05 12:00:00 2015', datetime(2015, 8, 5, 12, 0)),
-        param('April 9, 2013 at 6:11 a.m.', datetime(2013, 4, 9, 6, 11)),
-        param('Aug. 9, 2012 at 2:57 p.m.', datetime(2012, 8, 9, 14, 57)),
-        param('December 10, 2014, 11:02:21 pm', datetime(2014, 12, 10, 23, 2, 21)),
-        param('8:25 a.m. Dec. 12, 2014', datetime(2014, 12, 12, 8, 25)),
-        param('2:21 p.m., December 11, 2014', datetime(2014, 12, 11, 14, 21)),
-        param('Fri, 12 Dec 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50)),
-        param('20 Mar 2013 10h11', datetime(2013, 3, 20, 10, 11)),
-        param('10:06am Dec 11, 2014', datetime(2014, 12, 11, 10, 6)),
-        param('19 February 2013 year 09:10', datetime(2013, 2, 19, 9, 10)),
-        param('21 January 2012 13:11:23.678', datetime(2012, 1, 21, 13, 11, 23, 678000)),
-        param('1/1/16 9:02:43.1', datetime(2016, 1, 1, 9, 2, 43, 100000)),
+        param('November 19, 2014 at noon', datetime(2014, 11, 19, 12, 0), expected_period='time'),
+        param('December 13, 2014 at midnight', datetime(2014, 12, 13, 0, 0), expected_period='time'),
+        param('Nov 25 2014 10:17 pm', datetime(2014, 11, 25, 22, 17), expected_period='time'),
+        param('Wed Aug 05 12:00:00 2015', datetime(2015, 8, 5, 12, 0), expected_period='time'),
+        param('April 9, 2013 at 6:11 a.m.', datetime(2013, 4, 9, 6, 11), expected_period='time'),
+        param('Aug. 9, 2012 at 2:57 p.m.', datetime(2012, 8, 9, 14, 57), expected_period='time'),
+        param('December 10, 2014, 11:02:21 pm', datetime(2014, 12, 10, 23, 2, 21), expected_period='time'),
+        param('8:25 a.m. Dec. 12, 2014', datetime(2014, 12, 12, 8, 25), expected_period='time'),
+        param('2:21 p.m., December 11, 2014', datetime(2014, 12, 11, 14, 21), expected_period='time'),
+        param('Fri, 12 Dec 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50), expected_period='time'),
+        param('20 Mar 2013 10h11', datetime(2013, 3, 20, 10, 11), expected_period='time'),
+        param('10:06am Dec 11, 2014', datetime(2014, 12, 11, 10, 6), expected_period='time'),
+        param('19 February 2013 year 09:10', datetime(2013, 2, 19, 9, 10), expected_period='time'),
+        param('21 January 2012 13:11:23.678', datetime(2012, 1, 21, 13, 11, 23, 678000), expected_period='time'),
+        param('1/1/16 9:02:43.1', datetime(2016, 1, 1, 9, 2, 43, 100000), expected_period='time'),
         # French dates
         param('11 Mai 2014', datetime(2014, 5, 11)),
         param('dimanche, 11 Mai 2014', datetime(2014, 5, 11)),
-        param('22 janvier 2015 à 14h40', datetime(2015, 1, 22, 14, 40)),
-        param('Dimanche 1er Février à 21:24', datetime(2012, 2, 1, 21, 24)),
-        param('vendredi, décembre 5 2014.', datetime(2014, 12, 5, 0, 0)),
-        param('le 08 Déc 2014 15:11', datetime(2014, 12, 8, 15, 11)),
-        param('Le 11 Décembre 2014 à 09:00', datetime(2014, 12, 11, 9, 0)),
+        param('22 janvier 2015 à 14h40', datetime(2015, 1, 22, 14, 40), expected_period='time'),
+        param('Dimanche 1er Février à 21:24', datetime(2012, 2, 1, 21, 24), expected_period='time'),
+        param('vendredi, décembre 5 2014.', datetime(2014, 12, 5, 0, 0), expected_period='day'),
+        param('le 08 Déc 2014 15:11', datetime(2014, 12, 8, 15, 11), expected_period='time'),
+        param('Le 11 Décembre 2014 à 09:00', datetime(2014, 12, 11, 9, 0), expected_period='time'),
         param('fév 15, 2013', datetime(2013, 2, 15, 0, 0)),
-        param('Jeu 15:12', datetime(2012, 11, 8, 15, 12)),
+        param('Jeu 15:12', datetime(2012, 11, 8, 15, 12), expected_period='time'),
         # Spanish dates
         param('Martes 21 de Octubre de 2014', datetime(2014, 10, 21)),
         param('Miércoles 20 de Noviembre de 2013', datetime(2013, 11, 20)),
@@ -64,38 +64,38 @@ class TestDateParser(BaseTestCase):
         param('13 Ago, 2014', datetime(2014, 8, 13)),
         param('13 Septiembre, 2014', datetime(2014, 9, 13)),
         param('11 Marzo, 2014', datetime(2014, 3, 11)),
-        param('julio 5, 2015 en 1:04 pm', datetime(2015, 7, 5, 13, 4)),
-        param('Vi 17:15', datetime(2012, 11, 9, 17, 15)),
+        param('julio 5, 2015 en 1:04 pm', datetime(2015, 7, 5, 13, 4), expected_period='time'),
+        param('Vi 17:15', datetime(2012, 11, 9, 17, 15), expected_period='time'),
         # Dutch dates
         param('11 augustus 2014', datetime(2014, 8, 11)),
         param('14 januari 2014', datetime(2014, 1, 14)),
-        param('vr jan 24, 2014 12:49', datetime(2014, 1, 24, 12, 49)),
+        param('vr jan 24, 2014 12:49', datetime(2014, 1, 24, 12, 49), expected_period='time'),
         # Italian dates
         param('16 giu 2014', datetime(2014, 6, 16)),
         param('26 gennaio 2014', datetime(2014, 1, 26)),
-        param('Ven 18:23', datetime(2012, 11, 9, 18, 23)),
+        param('Ven 18:23', datetime(2012, 11, 9, 18, 23), expected_period='time'),
         # Portuguese dates
-        param('sexta-feira, 10 de junho de 2014 14:52', datetime(2014, 6, 10, 14, 52)),
+        param('sexta-feira, 10 de junho de 2014 14:52', datetime(2014, 6, 10, 14, 52), expected_period='time'),
         param('13 Setembro, 2014', datetime(2014, 9, 13)),
-        param('Sab 3:03', datetime(2012, 11, 10, 3, 3)),
+        param('Sab 3:03', datetime(2012, 11, 10, 3, 3), expected_period='time'),
         # Russian dates
         param('10 мая', datetime(2012, 5, 10)),  # forum.codenet.ru
         param('26 апреля', datetime(2012, 4, 26)),
         param('20 ноября 2013', datetime(2013, 11, 20)),
-        param('28 октября 2014 в 07:54', datetime(2014, 10, 28, 7, 54)),
-        param('13 января 2015 г. в 13:34', datetime(2015, 1, 13, 13, 34)),
+        param('28 октября 2014 в 07:54', datetime(2014, 10, 28, 7, 54), expected_period='time'),
+        param('13 января 2015 г. в 13:34', datetime(2015, 1, 13, 13, 34), expected_period='time'),
         param('09 августа 2012', datetime(2012, 8, 9, 0, 0)),
-        param('Авг 26, 2015 15:12', datetime(2015, 8, 26, 15, 12)),
-        param('2 Декабрь 95 11:15', datetime(1995, 12, 2, 11, 15)),
-        param('13 янв. 2005 19:13', datetime(2005, 1, 13, 19, 13)),
-        param('13 авг. 2005 19:13', datetime(2005, 8, 13, 19, 13)),
-        param('13 авг. 2005г. 19:13', datetime(2005, 8, 13, 19, 13)),
-        param('13 авг. 2005 г. 19:13', datetime(2005, 8, 13, 19, 13)),
+        param('Авг 26, 2015 15:12', datetime(2015, 8, 26, 15, 12), expected_period='time'),
+        param('2 Декабрь 95 11:15', datetime(1995, 12, 2, 11, 15), expected_period='time'),
+        param('13 янв. 2005 19:13', datetime(2005, 1, 13, 19, 13), expected_period='time'),
+        param('13 авг. 2005 19:13', datetime(2005, 8, 13, 19, 13), expected_period='time'),
+        param('13 авг. 2005г. 19:13', datetime(2005, 8, 13, 19, 13), expected_period='time'),
+        param('13 авг. 2005 г. 19:13', datetime(2005, 8, 13, 19, 13), expected_period='time'),
         # Turkish dates
         param('11 Ağustos, 2014', datetime(2014, 8, 11)),
-        param('08.Haziran.2014, 11:07', datetime(2014, 6, 8, 11, 7)),  # forum.andronova.net
-        param('17.Şubat.2014, 17:51', datetime(2014, 2, 17, 17, 51)),
-        param('14-Aralık-2012, 20:56', datetime(2012, 12, 14, 20, 56)),  # forum.ceviz.net
+        param('08.Haziran.2014, 11:07', datetime(2014, 6, 8, 11, 7), expected_period='time'),  # forum.andronova.net
+        param('17.Şubat.2014, 17:51', datetime(2014, 2, 17, 17, 51), expected_period='time'),
+        param('14-Aralık-2012, 20:56', datetime(2012, 12, 14, 20, 56), expected_period='time'),  # forum.ceviz.net
         # Romanian dates
         param('13 iunie 2013', datetime(2013, 6, 13)),
         param('14 aprilie 2014', datetime(2014, 4, 14)),
@@ -105,88 +105,89 @@ class TestDateParser(BaseTestCase):
         param('21. Dezember 2013', datetime(2013, 12, 21)),
         param('19. Februar 2012', datetime(2012, 2, 19)),
         param('26. Juli 2014', datetime(2014, 7, 26)),
-        param('18.10.14 um 22:56 Uhr', datetime(2014, 10, 18, 22, 56)),
+        param('18.10.14 um 22:56 Uhr', datetime(2014, 10, 18, 22, 56), expected_period='time'),
         param('12-Mär-2014', datetime(2014, 3, 12)),
-        param('Mit 13:14', datetime(2012, 11, 7, 13, 14)),
+        param('Mit 13:14', datetime(2012, 11, 7, 13, 14), expected_period='time'),
         # Czech dates
-        param('pon 16. čer 2014 10:07:43', datetime(2014, 6, 16, 10, 7, 43)),
+        param('pon 16. čer 2014 10:07:43', datetime(2014, 6, 16, 10, 7, 43), expected_period='time'),
         param('13 Srpen, 2014', datetime(2014, 8, 13)),
-        param('čtv 14. lis 2013 12:38:43', datetime(2013, 11, 14, 12, 38, 43)),
+        param('čtv 14. lis 2013 12:38:43', datetime(2013, 11, 14, 12, 38, 43), expected_period='time'),
         # Thai dates
-        param('ธันวาคม 11, 2014, 08:55:08 PM', datetime(2014, 12, 11, 20, 55, 8)),
-        param('22 พฤษภาคม 2012, 22:12', datetime(2012, 5, 22, 22, 12)),
-        param('11 กุมภา 2020, 8:13 AM', datetime(2020, 2, 11, 8, 13)),
-        param('1 เดือนตุลาคม 2005, 1:00 AM', datetime(2005, 10, 1, 1, 0)),
-        param('11 ก.พ. 2020, 1:13 pm', datetime(2020, 2, 11, 13, 13)),
+        param('ธันวาคม 11, 2014, 08:55:08 PM', datetime(2014, 12, 11, 20, 55, 8), expected_period='time'),
+        param('22 พฤษภาคม 2012, 22:12', datetime(2012, 5, 22, 22, 12), expected_period='time'),
+        param('11 กุมภา 2020, 8:13 AM', datetime(2020, 2, 11, 8, 13), expected_period='time'),
+        param('1 เดือนตุลาคม 2005, 1:00 AM', datetime(2005, 10, 1, 1, 0), expected_period='time'),
+        param('11 ก.พ. 2020, 1:13 pm', datetime(2020, 2, 11, 13, 13), expected_period='time'),
         # Vietnamese dates
         param('Thứ năm', datetime(2012, 11, 8)),  # Thursday
         param('Thứ sáu', datetime(2012, 11, 9)),  # Friday
-        param('Tháng Mười Hai 29, 2013, 14:14', datetime(2013, 12, 29, 14, 14)),  # bpsosrcs.wordpress.com
-        param('05 Tháng một 2015 - 03:54 AM', datetime(2015, 1, 5, 3, 54)),
+        param('Tháng Mười Hai 29, 2013, 14:14', datetime(2013, 12, 29, 14, 14), expected_period='time'),  # bpsosrcs.wordpress.com
+        param('05 Tháng một 2015 - 03:54 AM', datetime(2015, 1, 5, 3, 54), expected_period='time'),
         # Belarusian dates
         param('11 траўня', datetime(2012, 5, 11)),
         param('4 мая', datetime(2012, 5, 4)),
         param('Чацвер 06 жніўня 2015', datetime(2015, 8, 6)),
-        param('Нд 14 сакавіка 2015 у 7 гадзін 10 хвілін', datetime(2015, 3, 14, 7, 10)),
-        param('5 жніўня 2015 года у 13:34', datetime(2015, 8, 5, 13, 34)),
+        param('Нд 14 сакавіка 2015 у 7 гадзін 10 хвілін', datetime(2015, 3, 14, 7, 10), expected_period='time'),
+        param('5 жніўня 2015 года у 13:34', datetime(2015, 8, 5, 13, 34), expected_period='time'),
         # Ukrainian dates
         param('2015-кві-12', datetime(2015, 4, 12)),
-        param('21 чер 2013 3:13', datetime(2013, 6, 21, 3, 13)),
-        param('12 лютого 2012, 13:12:23', datetime(2012, 2, 12, 13, 12, 23)),
-        param('вів о 14:04', datetime(2012, 11, 6, 14, 4)),
+        param('21 чер 2013 3:13', datetime(2013, 6, 21, 3, 13), expected_period='time'),
+        param('12 лютого 2012, 13:12:23', datetime(2012, 2, 12, 13, 12, 23), expected_period='time'),
+        param('вів о 14:04', datetime(2012, 11, 6, 14, 4), expected_period='time'),
         # Tagalog dates
-        param('12 Hulyo 2003 13:01', datetime(2003, 7, 12, 13, 1)),
-        param('1978, 1 Peb, 7:05 PM', datetime(1978, 2, 1, 19, 5)),
+        param('12 Hulyo 2003 13:01', datetime(2003, 7, 12, 13, 1), expected_period='time'),
+        param('1978, 1 Peb, 7:05 PM', datetime(1978, 2, 1, 19, 5), expected_period='time'),
         param('2 hun', datetime(2012, 6, 2)),
-        param('Lin 16:16', datetime(2012, 11, 11, 16, 16)),
+        param('Lin 16:16', datetime(2012, 11, 11, 16, 16), expected_period='time'),
         # Japanese dates
-        param('2016年3月20日(日) 21時40分', datetime(2016, 3, 20, 21, 40)),
-        param("2016年3月20日 21時40分", datetime(2016, 3, 20, 21, 40)),
+        param('2016年3月20日(日) 21時40分', datetime(2016, 3, 20, 21, 40), expected_period='time'),
+        param("2016年3月20日 21時40分", datetime(2016, 3, 20, 21, 40), expected_period='time'),
         # Numeric dates
         param('06-17-2014', datetime(2014, 6, 17)),
         param('13/03/2014', datetime(2014, 3, 13)),
-        param('11. 12. 2014, 08:45:39', datetime(2014, 11, 12, 8, 45, 39)),
+        param('11. 12. 2014, 08:45:39', datetime(2014, 11, 12, 8, 45, 39), expected_period='time'),
         # Miscellaneous dates
         param('1 Ni 2015', datetime(2015, 4, 1, 0, 0)),
         param('1 Mar 2015', datetime(2015, 3, 1, 0, 0)),
         param('1 сер 2015', datetime(2015, 8, 1, 0, 0)),
-        param('2016020417:10', datetime(2016, 2, 4, 17, 10)),
+        param('2016020417:10', datetime(2016, 2, 4, 17, 10), expected_period='time'),
         # Chinese dates
-        param('2015年04月08日10:05', datetime(2015, 4, 8, 10, 5)),
-        param('2012年12月20日10:35', datetime(2012, 12, 20, 10, 35)),
-        param('2016年06月30日09时30分', datetime(2016, 6, 30, 9, 30)),
-        param('2016年6月2911:30', datetime(2016, 6, 29, 11, 30)),
+        param('2015年04月08日10:05', datetime(2015, 4, 8, 10, 5), expected_period='time'),
+        param('2012年12月20日10:35', datetime(2012, 12, 20, 10, 35), expected_period='time'),
+        param('2016年06月30日09时30分', datetime(2016, 6, 30, 9, 30), expected_period='time'),
+        param('2016年6月2911:30', datetime(2016, 6, 29, 11, 30), expected_period='time'),
         param('2016年6月29', datetime(2016, 6, 29, 0, 0)),
         param('2016年 2月 5日', datetime(2016, 2, 5, 0, 0)),
-        param('2016年9月14日晚8:00', datetime(2016, 9, 14, 20, 0)),
+        param('2016年9月14日晚8:00', datetime(2016, 9, 14, 20, 0), expected_period='time'),
         # Bulgarian
         param('25 ян 2016', datetime(2016, 1, 25, 0, 0)),
-        param('23 декември 2013 15:10:01', datetime(2013, 12, 23, 15, 10, 1)),
+        param('23 декември 2013 15:10:01', datetime(2013, 12, 23, 15, 10, 1), expected_period='time'),
         # Bangla dates
         param('[সেপ্টেম্বর] 04, 2014.', datetime(2014, 9, 4)),
         param('মঙ্গলবার জুলাই 22, 2014', datetime(2014, 7, 22)),
         param('শুক্রবার', datetime(2012, 11, 9)),
-        param('শুক্র, 12 ডিসেম্বর 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50)),
+        param('শুক্র, 12 ডিসেম্বর 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50), expected_period='time'),
         param('1লা জানুয়ারী 2015', datetime(2015, 1, 1)),
         param('25শে মার্চ 1971', datetime(1971, 3, 25)),
         param('8ই মে 2002', datetime(2002, 5, 8)),
-        param('10:06am ডিসেম্বর 11, 2014', datetime(2014, 12, 11, 10, 6)),
-        param('19 ফেব্রুয়ারী 2013 সাল 09:10', datetime(2013, 2, 19, 9, 10)),
+        param('10:06am ডিসেম্বর 11, 2014', datetime(2014, 12, 11, 10, 6), expected_period='time'),
+        param('19 ফেব্রুয়ারী 2013 সাল 09:10', datetime(2013, 2, 19, 9, 10), expected_period='time'),
         # Hindi dates
-        param('11 जुलाई 1994, 11:12', datetime(1994, 7, 11, 11, 12)),
+        param('11 जुलाई 1994, 11:12', datetime(1994, 7, 11, 11, 12), expected_period='time'),
         param('१७ अक्टूबर २०१८', datetime(2018, 10, 17, 0, 0)),
-        param('12 जनवरी  1997 11:08 अपराह्न', datetime(1997, 1, 12, 23, 8)),
+        param('12 जनवरी  1997 11:08 अपराह्न', datetime(1997, 1, 12, 23, 8), expected_period='time'),
         # Georgian dates
         param('2011 წლის 17 მარტი, ოთხშაბათი', datetime(2011, 3, 17, 0, 0)),
-        param('2015 წ. 12 ივნ, 15:34', datetime(2015, 6, 12, 15, 34))
+        param('2015 წ. 12 ივნ, 15:34', datetime(2015, 6, 12, 15, 34), expected_period='time')
     ])
-    def test_dates_parsing(self, date_string, expected):
+    def test_dates_parsing(self, date_string, expected, expected_period='day'):
         self.given_parser(settings={'NORMALIZE': False,
                                     'RELATIVE_BASE': datetime(2012, 11, 13)})
         self.when_date_is_parsed(date_string)
         self.then_date_was_parsed_by_date_parser()
-        self.then_period_is('day')
+        self.then_period_is(expected_period)
         self.then_date_obj_exactly_is(expected)
+
 
     def test_stringified_datetime_should_parse_fine(self):
         expected_date = datetime(2012, 11, 13, 10, 15, 5, 330256)
@@ -194,38 +195,38 @@ class TestDateParser(BaseTestCase):
         date_string = str(self.parser.get_date_data('today')['date_obj'])
         self.when_date_is_parsed(date_string)
         self.then_date_was_parsed_by_date_parser()
-        self.then_period_is('day')
+        self.then_period_is('time')
         self.then_date_obj_exactly_is(expected_date)
 
     @parameterized.expand([
         # English dates
         param('[Sept] 04, 2014.', datetime(2014, 9, 4)),
         param('Tuesday Jul 22, 2014', datetime(2014, 7, 22)),
-        param('10:04am', datetime(2012, 11, 13, 10, 4)),
+        param('10:04am', datetime(2012, 11, 13, 10, 4), expected_period='time'),
         param('Friday', datetime(2012, 11, 9)),
-        param('November 19, 2014 at noon', datetime(2014, 11, 19, 12, 0)),
-        param('December 13, 2014 at midnight', datetime(2014, 12, 13, 0, 0)),
-        param('Nov 25 2014 10:17 pm', datetime(2014, 11, 25, 22, 17)),
-        param('Wed Aug 05 12:00:00 2015', datetime(2015, 8, 5, 12, 0)),
-        param('April 9, 2013 at 6:11 a.m.', datetime(2013, 4, 9, 6, 11)),
-        param('Aug. 9, 2012 at 2:57 p.m.', datetime(2012, 8, 9, 14, 57)),
-        param('December 10, 2014, 11:02:21 pm', datetime(2014, 12, 10, 23, 2, 21)),
-        param('8:25 a.m. Dec. 12, 2014', datetime(2014, 12, 12, 8, 25)),
-        param('2:21 p.m., December 11, 2014', datetime(2014, 12, 11, 14, 21)),
-        param('Fri, 12 Dec 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50)),
-        param('20 Mar 2013 10h11', datetime(2013, 3, 20, 10, 11)),
-        param('10:06am Dec 11, 2014', datetime(2014, 12, 11, 10, 6)),
-        param('19 February 2013 year 09:10', datetime(2013, 2, 19, 9, 10)),
+        param('November 19, 2014 at noon', datetime(2014, 11, 19, 12, 0), expected_period='time'),
+        param('December 13, 2014 at midnight', datetime(2014, 12, 13, 0, 0), expected_period='time'),
+        param('Nov 25 2014 10:17 pm', datetime(2014, 11, 25, 22, 17), expected_period='time'),
+        param('Wed Aug 05 12:00:00 2015', datetime(2015, 8, 5, 12, 0), expected_period='time'),
+        param('April 9, 2013 at 6:11 a.m.', datetime(2013, 4, 9, 6, 11), expected_period='time'),
+        param('Aug. 9, 2012 at 2:57 p.m.', datetime(2012, 8, 9, 14, 57), expected_period='time'),
+        param('December 10, 2014, 11:02:21 pm', datetime(2014, 12, 10, 23, 2, 21), expected_period='time'),
+        param('8:25 a.m. Dec. 12, 2014', datetime(2014, 12, 12, 8, 25), expected_period='time'),
+        param('2:21 p.m., December 11, 2014', datetime(2014, 12, 11, 14, 21), expected_period='time'),
+        param('Fri, 12 Dec 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50), expected_period='time'),
+        param('20 Mar 2013 10h11', datetime(2013, 3, 20, 10, 11), expected_period='time'),
+        param('10:06am Dec 11, 2014', datetime(2014, 12, 11, 10, 6), expected_period='time'),
+        param('19 February 2013 year 09:10', datetime(2013, 2, 19, 9, 10), expected_period='time'),
         # French dates
         param('11 Mai 2014', datetime(2014, 5, 11)),
         param('dimanche, 11 Mai 2014', datetime(2014, 5, 11)),
-        param('22 janvier 2015 à 14h40', datetime(2015, 1, 22, 14, 40)),  # wrong
-        param('Dimanche 1er Février à 21:24', datetime(2012, 2, 1, 21, 24)),
-        param('vendredi, décembre 5 2014.', datetime(2014, 12, 5, 0, 0)),
-        param('le 08 Déc 2014 15:11', datetime(2014, 12, 8, 15, 11)),
-        param('Le 11 Décembre 2014 à 09:00', datetime(2014, 12, 11, 9, 0)),
+        param('22 janvier 2015 à 14h40', datetime(2015, 1, 22, 14, 40), expected_period='time'),  # wrong
+        param('Dimanche 1er Février à 21:24', datetime(2012, 2, 1, 21, 24), expected_period='time'),
+        param('vendredi, décembre 5 2014.', datetime(2014, 12, 5, 0, 0), expected_period='day'),
+        param('le 08 Déc 2014 15:11', datetime(2014, 12, 8, 15, 11), expected_period='time'),
+        param('Le 11 Décembre 2014 à 09:00', datetime(2014, 12, 11, 9, 0), expected_period='time'),
         param('fév 15, 2013', datetime(2013, 2, 15, 0, 0)),
-        param('Jeu 15:12', datetime(2012, 11, 8, 15, 12)),
+        param('Jeu 15:12', datetime(2012, 11, 8, 15, 12), expected_period='time'),
         # Spanish dates
         param('Martes 21 de Octubre de 2014', datetime(2014, 10, 21)),
         param('Miércoles 20 de Noviembre de 2013', datetime(2013, 11, 20)),
@@ -233,99 +234,99 @@ class TestDateParser(BaseTestCase):
         param('13 Ago, 2014', datetime(2014, 8, 13)),
         param('13 Septiembre, 2014', datetime(2014, 9, 13)),
         param('11 Marzo, 2014', datetime(2014, 3, 11)),
-        param('julio 5, 2015 en 1:04 pm', datetime(2015, 7, 5, 13, 4)),
-        param('Vi 17:15', datetime(2012, 11, 9, 17, 15)),
+        param('julio 5, 2015 en 1:04 pm', datetime(2015, 7, 5, 13, 4), expected_period='time'),
+        param('Vi 17:15', datetime(2012, 11, 9, 17, 15), expected_period='time'),
         # Dutch dates
         param('11 augustus 2014', datetime(2014, 8, 11)),
         param('14 januari 2014', datetime(2014, 1, 14)),
-        param('vr jan 24, 2014 12:49', datetime(2014, 1, 24, 12, 49)),
+        param('vr jan 24, 2014 12:49', datetime(2014, 1, 24, 12, 49), expected_period='time'),
         # Italian dates
         param('16 giu 2014', datetime(2014, 6, 16)),
         param('26 gennaio 2014', datetime(2014, 1, 26)),
-        param('Ven 18:23', datetime(2012, 11, 9, 18, 23)),
+        param('Ven 18:23', datetime(2012, 11, 9, 18, 23), expected_period='time'),
         # Portuguese dates
-        param('sexta-feira, 10 de junho de 2014 14:52', datetime(2014, 6, 10, 14, 52)),
+        param('sexta-feira, 10 de junho de 2014 14:52', datetime(2014, 6, 10, 14, 52), expected_period='time'),
         param('13 Setembro, 2014', datetime(2014, 9, 13)),
-        param('Sab 3:03', datetime(2012, 11, 10, 3, 3)),
+        param('Sab 3:03', datetime(2012, 11, 10, 3, 3), expected_period='time'),
         # Russian dates
         param('10 мая', datetime(2012, 5, 10)),  # forum.codenet.ru
         param('26 апреля', datetime(2012, 4, 26)),
         param('20 ноября 2013', datetime(2013, 11, 20)),
-        param('28 октября 2014 в 07:54', datetime(2014, 10, 28, 7, 54)),
-        param('13 января 2015 г. в 13:34', datetime(2015, 1, 13, 13, 34)),
+        param('28 октября 2014 в 07:54', datetime(2014, 10, 28, 7, 54), expected_period='time'),
+        param('13 января 2015 г. в 13:34', datetime(2015, 1, 13, 13, 34), expected_period='time'),
         param('09 августа 2012', datetime(2012, 8, 9, 0, 0)),
-        param('Авг 26, 2015 15:12', datetime(2015, 8, 26, 15, 12)),
-        param('2 Декабрь 95 11:15', datetime(1995, 12, 2, 11, 15)),
-        param('13 янв. 2005 19:13', datetime(2005, 1, 13, 19, 13)),
-        param('13 авг. 2005 19:13', datetime(2005, 8, 13, 19, 13)),
-        param('13 авг. 2005г. 19:13', datetime(2005, 8, 13, 19, 13)),
-        param('13 авг. 2005 г. 19:13', datetime(2005, 8, 13, 19, 13)),
+        param('Авг 26, 2015 15:12', datetime(2015, 8, 26, 15, 12), expected_period='time'),
+        param('2 Декабрь 95 11:15', datetime(1995, 12, 2, 11, 15), expected_period='time'),
+        param('13 янв. 2005 19:13', datetime(2005, 1, 13, 19, 13), expected_period='time'),
+        param('13 авг. 2005 19:13', datetime(2005, 8, 13, 19, 13), expected_period='time'),
+        param('13 авг. 2005г. 19:13', datetime(2005, 8, 13, 19, 13), expected_period='time'),
+        param('13 авг. 2005 г. 19:13', datetime(2005, 8, 13, 19, 13), expected_period='time'),
         # Turkish dates
         param('11 Ağustos, 2014', datetime(2014, 8, 11)),
-        param('08.Haziran.2014, 11:07', datetime(2014, 6, 8, 11, 7)),  # forum.andronova.net
-        param('17.Şubat.2014, 17:51', datetime(2014, 2, 17, 17, 51)),
-        param('14-Aralık-2012, 20:56', datetime(2012, 12, 14, 20, 56)),  # forum.ceviz.net
+        param('08.Haziran.2014, 11:07', datetime(2014, 6, 8, 11, 7), expected_period='time'),  # forum.andronova.net
+        param('17.Şubat.2014, 17:51', datetime(2014, 2, 17, 17, 51), expected_period='time'),
+        param('14-Aralık-2012, 20:56', datetime(2012, 12, 14, 20, 56), expected_period='time'),  # forum.ceviz.net
         # Romanian dates
         param('13 iunie 2013', datetime(2013, 6, 13)),
         param('14 aprilie 2014', datetime(2014, 4, 14)),
         param('18 martie 2012', datetime(2012, 3, 18)),
-        param('S 14:14', datetime(2012, 11, 10, 14, 14)),
+        param('S 14:14', datetime(2012, 11, 10, 14, 14), expected_period='time'),
         param('12-Iun-2013', datetime(2013, 6, 12)),
         # German dates
         param('21. Dezember 2013', datetime(2013, 12, 21)),
         param('19. Februar 2012', datetime(2012, 2, 19)),
         param('26. Juli 2014', datetime(2014, 7, 26)),
-        param('18.10.14 um 22:56 Uhr', datetime(2014, 10, 18, 22, 56)),
+        param('18.10.14 um 22:56 Uhr', datetime(2014, 10, 18, 22, 56), expected_period='time'),
         param('12-Mär-2014', datetime(2014, 3, 12)),
-        param('Mit 13:14', datetime(2012, 11, 7, 13, 14)),
+        param('Mit 13:14', datetime(2012, 11, 7, 13, 14), expected_period='time'),
         # Czech dates
-        param('pon 16. čer 2014 10:07:43', datetime(2014, 6, 16, 10, 7, 43)),
+        param('pon 16. čer 2014 10:07:43', datetime(2014, 6, 16, 10, 7, 43), expected_period='time'),
         param('13 Srpen, 2014', datetime(2014, 8, 13)),
-        param('čtv 14. lis 2013 12:38:43', datetime(2013, 11, 14, 12, 38, 43)),
+        param('čtv 14. lis 2013 12:38:43', datetime(2013, 11, 14, 12, 38, 43), expected_period='time'),
         # Thai dates
-        param('ธันวาคม 11, 2014, 08:55:08 PM', datetime(2014, 12, 11, 20, 55, 8)),
-        param('22 พฤษภาคม 2012, 22:12', datetime(2012, 5, 22, 22, 12)),
-        param('11 กุมภา 2020, 8:13 AM', datetime(2020, 2, 11, 8, 13)),
-        param('1 เดือนตุลาคม 2005, 1:00 AM', datetime(2005, 10, 1, 1, 0)),
-        param('11 ก.พ. 2020, 1:13 pm', datetime(2020, 2, 11, 13, 13)),
+        param('ธันวาคม 11, 2014, 08:55:08 PM', datetime(2014, 12, 11, 20, 55, 8), expected_period='time'),
+        param('22 พฤษภาคม 2012, 22:12', datetime(2012, 5, 22, 22, 12), expected_period='time'),
+        param('11 กุมภา 2020, 8:13 AM', datetime(2020, 2, 11, 8, 13), expected_period='time'),
+        param('1 เดือนตุลาคม 2005, 1:00 AM', datetime(2005, 10, 1, 1, 0), expected_period='time'),
+        param('11 ก.พ. 2020, 1:13 pm', datetime(2020, 2, 11, 13, 13), expected_period='time'),
         # Vietnamese dates
         param('Thứ năm', datetime(2012, 11, 8)),  # Thursday
         param('Thứ sáu', datetime(2012, 11, 9)),  # Friday
-        param('Tháng Mười Hai 29, 2013, 14:14', datetime(2013, 12, 29, 14, 14)),  # bpsosrcs.wordpress.com
-        param('05 Tháng một 2015 - 03:54 AM', datetime(2015, 1, 5, 3, 54)),
+        param('Tháng Mười Hai 29, 2013, 14:14', datetime(2013, 12, 29, 14, 14), expected_period='time'),  # bpsosrcs.wordpress.com
+        param('05 Tháng một 2015 - 03:54 AM', datetime(2015, 1, 5, 3, 54), expected_period='time'),
         # Belarusian dates
         param('11 траўня', datetime(2012, 5, 11)),
         param('4 мая', datetime(2012, 5, 4)),
         param('Чацвер 06 жніўня 2015', datetime(2015, 8, 6)),
-        param('Нд 14 сакавіка 2015 у 7 гадзін 10 хвілін', datetime(2015, 3, 14, 7, 10)),
-        param('5 жніўня 2015 года у 13:34', datetime(2015, 8, 5, 13, 34)),
+        param('Нд 14 сакавіка 2015 у 7 гадзін 10 хвілін', datetime(2015, 3, 14, 7, 10), expected_period='time'),
+        param('5 жніўня 2015 года у 13:34', datetime(2015, 8, 5, 13, 34), expected_period='time'),
         # Ukrainian dates
         param('2015-кві-12', datetime(2015, 4, 12)),
-        param('21 чер 2013 3:13', datetime(2013, 6, 21, 3, 13)),
-        param('12 лютого 2012, 13:12:23', datetime(2012, 2, 12, 13, 12, 23)),
-        param('вів о 14:04', datetime(2012, 11, 6, 14, 4)),
+        param('21 чер 2013 3:13', datetime(2013, 6, 21, 3, 13), expected_period='time'),
+        param('12 лютого 2012, 13:12:23', datetime(2012, 2, 12, 13, 12, 23), expected_period='time'),
+        param('вів о 14:04', datetime(2012, 11, 6, 14, 4), expected_period='time'),
         # Filipino dates
-        param('12 Hulyo 2003 13:01', datetime(2003, 7, 12, 13, 1)),
-        param('1978, 1 Peb, 7:05 PM', datetime(1978, 2, 1, 19, 5)),
+        param('12 Hulyo 2003 13:01', datetime(2003, 7, 12, 13, 1), expected_period='time'),
+        param('1978, 1 Peb, 7:05 PM', datetime(1978, 2, 1, 19, 5), expected_period='time'),
         param('2 hun', datetime(2012, 6, 2)),
-        param('Lin 16:16', datetime(2012, 11, 11, 16, 16)),
+        param('Lin 16:16', datetime(2012, 11, 11, 16, 16), expected_period='time'),
         # Japanese dates
-        param('2016年3月20日(日) 21時40分', datetime(2016, 3, 20, 21, 40)),
-        param("2016年3月20日 21時40分", datetime(2016, 3, 20, 21, 40)),
+        param('2016年3月20日(日) 21時40分', datetime(2016, 3, 20, 21, 40), expected_period='time'),
+        param("2016年3月20日 21時40分", datetime(2016, 3, 20, 21, 40), expected_period='time'),
         # Bangla dates
         param('[সেপ্টেম্বর] 04, 2014.', datetime(2014, 9, 4)),
         param('মঙ্গলবার জুলাই 22, 2014', datetime(2014, 7, 22)),
         param('শুক্রবার', datetime(2012, 11, 9)),
-        param('শুক্র, 12 ডিসেম্বর 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50)),
+        param('শুক্র, 12 ডিসেম্বর 2014 10:55:50', datetime(2014, 12, 12, 10, 55, 50), expected_period='time'),
         param('1লা জানুয়ারী 2015', datetime(2015, 1, 1)),
         param('25শে মার্চ 1971', datetime(1971, 3, 25)),
         param('8ই মে 2002', datetime(2002, 5, 8)),
-        param('10:06am ডিসেম্বর 11, 2014', datetime(2014, 12, 11, 10, 6)),
-        param('19 ফেব্রুয়ারী 2013 সাল 09:10', datetime(2013, 2, 19, 9, 10)),
+        param('10:06am ডিসেম্বর 11, 2014', datetime(2014, 12, 11, 10, 6), expected_period='time'),
+        param('19 ফেব্রুয়ারী 2013 সাল 09:10', datetime(2013, 2, 19, 9, 10), expected_period='time'),
         # Numeric dates
         param('06-17-2014', datetime(2014, 6, 17)),
         param('13/03/2014', datetime(2014, 3, 13)),
-        param('11. 12. 2014, 08:45:39', datetime(2014, 11, 12, 8, 45, 39)),
+        param('11. 12. 2014, 08:45:39', datetime(2014, 11, 12, 8, 45, 39), expected_period='time'),
         # Miscellaneous dates
         param('1 Ni 2015', datetime(2015, 4, 1, 0, 0)),
         param('1 Mar 2015', datetime(2015, 3, 1, 0, 0)),
@@ -333,18 +334,18 @@ class TestDateParser(BaseTestCase):
         # Bulgarian
         param('24 ян 2015г.', datetime(2015, 1, 24, 0, 0)),
         # Hindi dates
-        param('बुधवार 24 मई 1997 12:09', datetime(1997, 5, 24, 12, 9)),
-        param('28 दिसम्बर 2000 , 01:09:08', datetime(2000, 12, 28, 1, 9, 8)),
+        param('बुधवार 24 मई 1997 12:09', datetime(1997, 5, 24, 12, 9), expected_period='time'),
+        param('28 दिसम्बर 2000 , 01:09:08', datetime(2000, 12, 28, 1, 9, 8), expected_period='time'),
         param('१६ दिसम्बर १९७१', datetime(1971, 12, 16, 0, 0)),
-        param('सन् 1989 11 फ़रवरी 09:43', datetime(1989, 2, 11, 9, 43)),
+        param('सन् 1989 11 फ़रवरी 09:43', datetime(1989, 2, 11, 9, 43), expected_period='time'),
     ])
-    def test_dates_parsing_with_normalization(self, date_string, expected):
+    def test_dates_parsing_with_normalization(self, date_string, expected, expected_period='day'):
         self.given_local_tz_offset(0)
         self.given_parser(settings={'NORMALIZE': True,
                                     'RELATIVE_BASE': datetime(2012, 11, 13)})
         self.when_date_is_parsed(normalize_unicode(date_string))
         self.then_date_was_parsed_by_date_parser()
-        self.then_period_is('day')
+        self.then_period_is(expected_period)
         self.then_date_obj_exactly_is(expected)
 
     @parameterized.expand([
@@ -353,11 +354,11 @@ class TestDateParser(BaseTestCase):
         param('15 May 2004 23:24 EDT', datetime(2004, 5, 16, 3, 24)),
         param('08/17/14 17:00 (PDT)', datetime(2014, 8, 18, 0, 0)),
     ])
-    def test_parsing_with_time_zones_and_converting_to_UTC(self, date_string, expected):
+    def test_parsing_with_time_zones_and_converting_to_UTC(self, date_string, expected, expected_period='time'):
         self.given_parser(settings={'TO_TIMEZONE': 'UTC'})
         self.when_date_is_parsed(date_string)
         self.then_date_was_parsed_by_date_parser()
-        self.then_period_is('day')
+        self.then_period_is(expected_period)
         self.then_timezone_parsed_is('UTC')
         self.then_date_obj_exactly_is(expected)
 
@@ -373,11 +374,11 @@ class TestDateParser(BaseTestCase):
         param('Fri, 09 Sep 2005 13:51:39 +0000', '+00:00', datetime(2005, 9, 9, 13, 51, 39)),
     ])
     def test_dateparser_should_return_tzaware_date_when_tz_info_present_in_date_string(
-            self, date_string, timezone_str, expected):
+            self, date_string, timezone_str, expected, expected_period='time'):
         self.given_parser()
         self.when_date_is_parsed(date_string)
         self.then_date_was_parsed_by_date_parser()
-        self.then_period_is('day')
+        self.then_period_is(expected_period)
         self.then_timezone_parsed_is(timezone_str)
         self.then_date_obj_exactly_is(expected)
 
@@ -388,11 +389,11 @@ class TestDateParser(BaseTestCase):
         param('Fri, 09 Sep 2005 13:51:39 -0700', 'GMT', datetime(2005, 9, 9, 20, 51, 39)),
         param('Fri, 09 Sep 2005 13:51:39 +0000', 'GMT', datetime(2005, 9, 9, 13, 51, 39)),
     ])
-    def test_dateparser_should_return_date_in_setting_timezone_if_timezone_info_present_both_in_datestring_and_given_in_settings(self, date_string, setting_timezone, expected):
+    def test_dateparser_should_return_date_in_setting_timezone_if_timezone_info_present_both_in_datestring_and_given_in_settings(self, date_string, setting_timezone, expected, expected_period='time'):
         self.given_parser(settings={'TIMEZONE': setting_timezone})
         self.when_date_is_parsed(date_string)
         self.then_date_was_parsed_by_date_parser()
-        self.then_period_is('day')
+        self.then_period_is(expected_period)
         self.then_timezone_parsed_is(setting_timezone)
         self.then_date_obj_exactly_is(expected)
 
@@ -404,11 +405,11 @@ class TestDateParser(BaseTestCase):
         param('Fri, 09 Sep 2005 13:51:39 +0000', datetime(2005, 9, 9, 13, 51, 39)),
         param('Fri Sep 23 2016 10:34:51 GMT+0800 (CST)', datetime(2016, 9, 23, 2, 34, 51)),
     ])
-    def test_parsing_with_utc_offsets(self, date_string, expected):
+    def test_parsing_with_utc_offsets(self, date_string, expected, expected_period='time'):
         self.given_parser(settings={'TO_TIMEZONE': 'utc'})
         self.when_date_is_parsed(date_string)
         self.then_date_was_parsed_by_date_parser()
-        self.then_period_is('day')
+        self.then_period_is(expected_period)
         self.then_timezone_parsed_is('UTC')
         self.then_date_obj_exactly_is(expected)
 
@@ -592,8 +593,8 @@ class TestDateParser(BaseTestCase):
         param('December', expected=datetime(2015, 12, 15), period='month'),
         param('Friday', expected=datetime(2015, 2, 13), period='day'),
         param('Monday', expected=datetime(2015, 2, 9), period='day'),
-        param('10:00PM', expected=datetime(2015, 2, 15, 22, 00), period='day'),
-        param('16:10', expected=datetime(2015, 2, 15, 16, 10), period='day'),
+        param('10:00PM', expected=datetime(2015, 2, 15, 22, 00), period='time'),
+        param('16:10', expected=datetime(2015, 2, 15, 16, 10), period='time'),
         param('2014', expected=datetime(2014, 2, 15), period='year'),
         param('2008', expected=datetime(2008, 2, 15), period='year'),
     ])

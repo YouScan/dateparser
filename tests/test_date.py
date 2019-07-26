@@ -404,14 +404,14 @@ class TestDateDataParser(BaseTestCase):
         param(date_string="14_LUGLIO_15", date_formats=["%y_%B_%d"],
               expected_result=datetime(2014, 7, 15)),
         param(date_string="10.01.2016, 20:35", date_formats=["%d.%m.%Y, %H:%M"],
-              expected_result=datetime(2016, 1, 10, 20, 35)),
+              expected_result=datetime(2016, 1, 10, 20, 35), expected_period='time'),
     ])
-    def test_parse_date_using_format(self, date_string, date_formats, expected_result):
+    def test_parse_date_using_format(self, date_string, date_formats, expected_result, expected_period='day'):
         self.given_local_tz_offset(0)
         self.given_parser()
         self.when_date_string_is_parsed(date_string, date_formats)
         self.then_date_was_parsed()
-        self.then_period_is('day')
+        self.then_period_is(expected_period)
         self.then_parsed_datetime_is(expected_result)
 
     @parameterized.expand([
@@ -447,7 +447,7 @@ class TestDateDataParser(BaseTestCase):
         self.given_parser(settings={'TO_TIMEZONE': 'UTC'})
         self.when_date_string_is_parsed(date_string)
         self.then_date_was_parsed()
-        self.then_period_is('day')
+        self.then_period_is('time')
         self.result['date_obj'] = self.result['date_obj'].replace(tzinfo=None)
         self.then_parsed_datetime_is(expected_result)
 
@@ -462,7 +462,7 @@ class TestDateDataParser(BaseTestCase):
         self.given_parser()
         self.when_date_string_is_parsed(date_string, date_formats)
         self.then_date_was_parsed()
-        self.then_period_is('day')
+        self.then_period_is('time')
         self.then_parsed_datetime_is(expected_result)
 
     @parameterized.expand([
@@ -472,16 +472,16 @@ class TestDateDataParser(BaseTestCase):
         self.given_parser()
         self.when_date_string_is_parsed(date_string)
         self.then_date_was_parsed()
-        self.then_period_is('day')
+        self.then_period_is('time')
         self.then_parsed_datetime_is(expected_result)
 
     @parameterized.expand([
         param(date_string="12 jan 1876",
-              expected_result=(datetime(1876, 1, 12, 0, 0), 'day', 'en')),
+              expected_result=(datetime(1876, 1, 12, 0, 0), 'day', 'en', ['day', 'month', 'year'])),
         param(date_string="02/09/16",
-              expected_result=(datetime(2016, 2, 9, 0, 0), 'day', 'en')),
+              expected_result=(datetime(2016, 2, 9, 0, 0), 'day', 'en', ['month', 'day', 'year'])),
         param(date_string="10 giu 2018",
-              expected_result=(datetime(2018, 6, 10, 0, 0), 'day', 'it')),
+              expected_result=(datetime(2018, 6, 10, 0, 0), 'day', 'it', ['day', 'month', 'year'])),
     ])
     def test_get_date_tuple(self, date_string, expected_result):
         self.given_parser()

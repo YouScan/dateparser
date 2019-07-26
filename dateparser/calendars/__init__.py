@@ -21,8 +21,8 @@ class CalendarBase(object):
 
     def get_date(self):
         try:
-            date_obj, period = self.parser.parse(self.source, settings)
-            return {'date_obj': date_obj, 'period': period}
+            date_obj, period, inferred_order = self.parser.parse(self.source, settings)
+            return {'date_obj': date_obj, 'period': period, 'inferred_order': inferred_order}
         except ValueError:
             pass
 

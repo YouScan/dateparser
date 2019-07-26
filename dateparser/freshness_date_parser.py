@@ -120,7 +120,7 @@ class FreshnessDateDataParser(object):
             return None, None
 
         period = 'time'
-        if 'time' not in kwargs:
+        if 'hours' not in kwargs and 'minutes' not in kwargs and 'seconds' not in kwargs:
             for k in ['days', 'weeks', 'months', 'years']:
                 if k in kwargs:
                     period = k[:-1]

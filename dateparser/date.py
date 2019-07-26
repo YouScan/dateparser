@@ -216,12 +216,13 @@ class _DateLocaleParser(object):
             if self._settings.PREFER_LOCALE_DATE_ORDER:
                 if self._settings._default:
                     self._settings.DATE_ORDER = self.locale.info.get('date_order', _order)
-            date_obj, period = date_parser.parse(
+            date_obj, period, inferred_order = date_parser.parse(
                 self._get_translated_date(), settings=self._settings)
             self._settings.DATE_ORDER = _order
             return {
                 'date_obj': date_obj,
                 'period': period,
+                'inferred_order': inferred_order,
             }
         except ValueError:
             self._settings.DATE_ORDER = _order
@@ -230,7 +231,7 @@ class _DateLocaleParser(object):
     def _try_given_formats(self):
         if not self.date_formats:
             return
-
+        #TODO: implement inferred order
         return parse_with_formats(
             self._get_translated_date_with_formatting(),
             self.date_formats, settings=self._settings
@@ -268,7 +269,7 @@ class _DateLocaleParser(object):
     def _is_valid_date_obj(self, date_obj):
         if not isinstance(date_obj, dict):
             return False
-        if len(date_obj) != 2:
+        if len(date_obj) < 2:
             return False
         if 'date_obj' not in date_obj or 'period' not in date_obj:
             return False
@@ -276,7 +277,8 @@ class _DateLocaleParser(object):
             return False
         if date_obj['period'] not in ('time', 'day', 'week', 'month', 'year'):
             return False
-
+        if 'relative_period' in date_obj and date_obj['relative_period'] not in ('time', 'day', 'week', 'month', 'year'):
+            return False
         return True
 
 
@@ -422,7 +424,8 @@ class DateDataParser(object):
             return {'date_obj': None, 'period': 'day', 'locale': None}
 
     def get_date_tuple(self, *args, **kwargs):
-        date_tuple = collections.namedtuple('DateData', 'date_obj period locale')
+        date_tuple = collections.namedtuple('DateData', 'date_obj period locale inferred_order')
+        date_tuple.__new__.__defaults__ = (None,) * len(date_tuple._fields)
         date_data = self.get_date_data(*args, **kwargs)
         return date_tuple(**date_data)
 
