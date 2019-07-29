@@ -490,12 +490,16 @@ class TestDateDataParser(BaseTestCase):
 
     @parameterized.expand([
         param(date_string="22.05.2019 11:03",
-              expected_result=(datetime(2019, 5, 22, 11, 3), 'time', 'en', ['day', 'month', 'year'])),
+              expected_date=datetime(2019, 5, 22, 11, 3),
+              expected_period='time',
+              expected_order=['day', 'month', 'year']),
     ])
-    def test_inferred_order(self, date_string, expected_result):
-        self.given_parser()
-        self.when_get_date_tuple_is_called(date_string)
-        self.then_returned_tuple_is(expected_result)
+    def test_inferred_order(self, date_string, expected_date, expected_period, expected_order):
+        self.given_parser(settings={'DATE_ORDER': 'YMD'})
+        self.when_date_string_is_parsed(date_string)
+        self.then_parsed_datetime_is(expected_date)
+        self.then_period_is(expected_period)
+        self.then_returned_order_is(expected_order)
 
     def given_now(self, year, month, day, **time):
         datetime_mock = Mock(wraps=datetime)
@@ -568,6 +572,9 @@ class TestDateDataParser(BaseTestCase):
 
     def then_returned_tuple_is(self, expected_tuple):
         self.assertEqual(expected_tuple, self.result)
+
+    def then_returned_order_is(self, expected_order):
+        self.assertEqual(expected_order, self.result['inferred_order'])
 
 
 class TestParserInitialization(BaseTestCase):

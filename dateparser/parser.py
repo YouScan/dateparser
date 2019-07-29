@@ -35,25 +35,26 @@ def get_unresolved_attrs(parser_object):
     return seen, unseen
 
 
+chart = {
+    'MDY': '%m%d%y',
+    'MYD': '%m%y%d',
+    'YMD': '%y%m%d',
+    'YDM': '%y%d%m',
+    'DMY': '%d%m%y',
+    'DYM': '%d%y%m',
+}
+
+chart_list = {
+    'MDY': ['month', 'day', 'year'],
+    'MYD': ['month', 'year', 'day'],
+    'YMD': ['year', 'month', 'day'],
+    'YDM': ['year', 'day', 'month'],
+    'DMY': ['day', 'month', 'year'],
+    'DYM': ['day', 'year', 'month'],
+}
+
+
 def resolve_date_order(order, lst=None):
-    chart = {
-        'MDY': '%m%d%y',
-        'MYD': '%m%y%d',
-        'YMD': '%y%m%d',
-        'YDM': '%y%d%m',
-        'DMY': '%d%m%y',
-        'DYM': '%d%y%m',
-    }
-
-    chart_list = {
-        'MDY': ['month', 'day', 'year'],
-        'MYD': ['month', 'year', 'day'],
-        'YMD': ['year', 'month', 'day'],
-        'YDM': ['year', 'day', 'month'],
-        'DMY': ['day', 'month', 'year'],
-        'DYM': ['day', 'year', 'month'],
-    }
-
     return chart_list[order] if lst else chart[order]
 
 
@@ -275,12 +276,13 @@ class _parser(object):
         for attr in known:
             params.update({attr: getattr(self, attr)})
         for attr in unknown:
-            for token, type, _ in self.unset_tokens:
+            for token, type, _, pos in self.unset_tokens:
                 if type == 0:
                     params.update({attr: int(token)})
                     datetime(**params)
                     setattr(self, '_token_%s' % attr, token)
                     setattr(self, attr, int(token))
+                    self.inferred_order[pos] = attr
 
     def _get_period(self):
         for period in ['time', 'day']:
@@ -486,7 +488,8 @@ class _parser(object):
                                 if prev_type == type:
                                     do = self._get_date_obj(prev_token, directive)
                             except ValueError:
-                                self.unset_tokens.append((prev_token, prev_type, component))
+                                pos = self.inferred_order.index(component)
+                                self.unset_tokens.append((prev_token, prev_type, component, pos))
                                 return set_and_return(token, type, component, do)
                     except ValueError:
                         pass
