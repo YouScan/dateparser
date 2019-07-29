@@ -488,6 +488,15 @@ class TestDateDataParser(BaseTestCase):
         self.when_get_date_tuple_is_called(date_string)
         self.then_returned_tuple_is(expected_result)
 
+    @parameterized.expand([
+        param(date_string="22.05.2019 11:03",
+              expected_result=(datetime(2019, 5, 22, 11, 3), 'time', 'en', ['day', 'month', 'year'])),
+    ])
+    def test_inferred_order(self, date_string, expected_result):
+        self.given_parser()
+        self.when_get_date_tuple_is_called(date_string)
+        self.then_returned_tuple_is(expected_result)
+
     def given_now(self, year, month, day, **time):
         datetime_mock = Mock(wraps=datetime)
         datetime_mock.utcnow = Mock(return_value=datetime(year, month, day, **time))
