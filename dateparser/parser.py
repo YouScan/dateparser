@@ -285,16 +285,18 @@ class _parser(object):
                     self.inferred_order[pos] = attr
 
     def _get_period(self):
-        for period in ['time', 'day']:
-            if getattr(self, period, None):
-                return period
+        if getattr(self, 'time', None):
+            return 'time'
 
-        for period in ['month', 'year']:
-            if getattr(self, period, None):
+        if 'weekday' in self.inferred_order:
+            return 'day'
+
+        for period in ['day', 'month', 'year']:
+            if period in self.inferred_order:
                 return period
 
         if self._results():
-            return 'day'
+            return 'unknown'
 
     def _get_datetime_obj(self, **params):
         try:
