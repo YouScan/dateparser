@@ -26,10 +26,10 @@ setup(
     packages=find_packages(exclude=('tests', 'tests.*')),
     include_package_data=True,
     install_requires=[
-        'python-dateutil',
-        'pytz',
-        'regex',
-        'tzlocal',
+        'python-dateutil==2.7.5',
+        'pytz==2018.9',
+        'regex==2019.01.24',
+        'tzlocal==1.5.1',
     ],
     extra_requires={
         'calendars': ['convertdate', 'umalqurra', 'jdatetime', 'ruamel.yaml'],
